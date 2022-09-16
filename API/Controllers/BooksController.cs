@@ -2,17 +2,19 @@
 using API.Extensions;
 using API.Helpers;
 using API.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class BookController : ControllerBase
+    public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
 
-        public BookController(IBookService bookService)
+        public BooksController(IBookService bookService)
         {
             _bookService = bookService;
         }
@@ -39,6 +41,22 @@ namespace API.Controllers
             BookResponseDto bookResponseDto = await _bookService.CreateAsync(bookRequestDto);
 
             return CreatedAtAction(nameof(Get), new { bookId = bookResponseDto.Id }, bookResponseDto);
+        }
+
+        [HttpPut("{bookId}/reserve")]
+        public async Task<ActionResult> Reserve(int bookId)
+        {
+            await _bookService.ReserveAsync(bookId);
+
+            return NoContent();
+        }
+
+        [HttpPut("{bookId}/borrow")]
+        public async Task<ActionResult> Borrow(int bookId)
+        {
+            await _bookService.BorrowAsync(bookId);
+
+            return NoContent();
         }
     }
 }

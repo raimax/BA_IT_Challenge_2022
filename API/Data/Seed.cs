@@ -22,7 +22,7 @@ namespace API.Data
                 await CreateRoles(roleManager);
 
                 await CreateUser(userManager, "admin", new[] { "Admin" });
-                await CreateUser(userManager, "regular@gmail.com", new[] { "Regular" });
+                await CreateUser(userManager, "user", new[] { "Regular" });
             }
             catch (Exception ex)
             {

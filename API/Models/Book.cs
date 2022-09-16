@@ -1,5 +1,12 @@
 ﻿namespace API.Models
 {
+    enum BookStatus
+    {
+        AVAILABLE = 1,
+        RESERVED = 2,
+        BORROWED = 3
+    }
+
     public class Book
     {
         public int Id { get; set; }

@@ -10,21 +10,42 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Service
 {
-    public class BookService : IBookService
+    public class BookService : AppService, IBookService
     {
         private readonly DatabaseContext _context;
         private readonly IMapper _mapper;
 
-        public BookService(DatabaseContext context, IMapper mapper)
+        public BookService(DatabaseContext context, IMapper mapper, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _context = context;
             _mapper = mapper;
         }
 
+        public async Task BorrowAsync(int bookId)
+        {
+            AppUser? user = await _context.Users.SingleOrDefaultAsync(x => x.Id == CurrentUserId);
+            Book? book = await _context.Books.SingleOrDefaultAsync(x => x.Id == bookId);
+
+            if (user is null) throw new UnauthorizedException();
+            if (book is null) throw new NotFoundException("Book not found");
+
+            BorrowedBook borrowedBook = new()
+            {
+                BookId = bookId,
+                UserId = user.Id,
+            };
+
+            await _context.BorrowedBooks.AddAsync(borrowedBook);
+            book.StatusId = (int)BookStatus.BORROWED;
+
+            if (await _context.SaveChangesAsync() < 1)
+                throw new BadRequestException("Failed to borrow a book");
+        }
+
         public async Task<BookResponseDto> CreateAsync(BookRequestDto bookRequestDto)
         {
             Book book = _mapper.Map<Book>(bookRequestDto);
-            book.StatusId = 1;
+            book.StatusId = (int)BookStatus.AVAILABLE;
 
             await _context.Books.AddAsync(book);
 
@@ -101,6 +122,27 @@ namespace API.Service
             }
 
             return await PagedList<BookResponseDto>.CreateAsync(books, bookParams.PageNumber, bookParams.PageSize);
+        }
+
+        public async Task ReserveAsync(int bookId)
+        {
+            AppUser? user = await _context.Users.SingleOrDefaultAsync(x => x.Id == CurrentUserId);
+            Book? book = await _context.Books.SingleOrDefaultAsync(x => x.Id == bookId);
+
+            if (user is null) throw new UnauthorizedException();
+            if (book is null) throw new NotFoundException("Book not found");
+
+            ReservedBook reservedBook = new()
+            {
+                BookId = bookId,
+                UserId = user.Id,
+            };
+
+            await _context.ReservedBooks.AddAsync(reservedBook);
+            book.StatusId = (int)BookStatus.RESERVED;
+
+            if (await _context.SaveChangesAsync() < 1)
+                throw new BadRequestException("Failed to reserve a book");
         }
     }
 }
