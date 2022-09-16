@@ -4,6 +4,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220916132405_AuthorId")]
+    partial class AuthorId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,7 +198,8 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("AuthorId")
+                        .IsUnique();
 
                     b.HasIndex("PublisherId");
 
@@ -381,13 +384,13 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Book", b =>
                 {
                     b.HasOne("API.Models.Author", "Author")
-                        .WithMany("Books")
-                        .HasForeignKey("AuthorId")
+                        .WithOne("Book")
+                        .HasForeignKey("API.Models.Book", "AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Models.Publisher", "Publisher")
-                        .WithMany("Books")
+                        .WithMany("Book")
                         .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -495,7 +498,8 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Author", b =>
                 {
-                    b.Navigation("Books");
+                    b.Navigation("Book")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("API.Models.Book", b =>
@@ -509,7 +513,7 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Publisher", b =>
                 {
-                    b.Navigation("Books");
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("API.Models.Status", b =>

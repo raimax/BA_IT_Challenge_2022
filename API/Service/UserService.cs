@@ -28,18 +28,18 @@ namespace API.Service
             AppUser user = _mapper.Map<AppUser>(authDto);
 
             var creationResult = await _userManager.CreateAsync(user, authDto.Password);
-            string validationErrors = "";
+            string creationErrors = "";
 
             foreach (var (error, index) in creationResult.Errors.WithIndex())
             {
-                validationErrors += error.Description;
+                creationErrors += error.Description;
                 if (index != creationResult.Errors.Count() - 1)
                 {
-                    validationErrors += ", ";
+                    creationErrors += ", ";
                 }
             }
 
-            if (!creationResult.Succeeded) throw new BadRequestException(validationErrors);
+            if (!creationResult.Succeeded) throw new BadRequestException(creationErrors);
 
             var roleResult = await _userManager.AddToRoleAsync(user, "Regular");
             if (!roleResult.Succeeded) throw new BadRequestException(string.Join(", ", roleResult.Errors));

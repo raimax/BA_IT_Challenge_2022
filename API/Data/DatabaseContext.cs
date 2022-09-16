@@ -12,6 +12,14 @@ namespace API.Data
         {
         }
 
+        public DbSet<Book> Books { get; set; }
+        public DbSet<BorrowedBook> BorrowedBooks { get; set; }
+        public DbSet<ReservedBook> ReservedBooks { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<Status> Status { get; set; }
+
+
         protected override async void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -27,6 +35,18 @@ namespace API.Data
                 .WithOne(u => u.Role)
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
+
+            builder.Entity<BorrowedBook>()
+                .HasKey(b => new { b.UserId, b.BookId });
+
+            builder.Entity<ReservedBook>()
+                .HasKey(b => new { b.UserId, b.BookId });
+
+            //builder.Entity<BorrowedBook>()
+            //    .HasOne(source => source.User)
+            //    .WithMany(user => user.BorrowedBooks)
+            //    .HasForeignKey(s => s.UserId)
+            //    .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

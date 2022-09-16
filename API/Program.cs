@@ -26,7 +26,9 @@ using (var scope = app.Services.CreateScope())
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
     await context.Database.MigrateAsync();
-    await Seed.SeedUsers(userManager, roleManager);
+    Seed seed = new(context);
+    await seed.SeedUsers(userManager, roleManager);
+    await seed.SeedBookStatus();
 }
 
 // Configure the HTTP request pipeline.

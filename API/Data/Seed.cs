@@ -6,7 +6,14 @@ namespace API.Data
 {
     public class Seed
     {
-        public static async Task SeedUsers(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        private readonly DatabaseContext _dbContext;
+
+        public Seed(DatabaseContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public async Task SeedUsers(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             if (await userManager.Users.AnyAsync()) return;
 
@@ -24,7 +31,7 @@ namespace API.Data
             }
         }
 
-        private static async Task CreateRoles(RoleManager<AppRole> roleManager)
+        private async Task CreateRoles(RoleManager<AppRole> roleManager)
         {
             List<AppRole> roles = new List<AppRole>
                 {
@@ -38,7 +45,7 @@ namespace API.Data
             }
         }
 
-        private static async Task CreateUser(UserManager<AppUser> userManager, string username, string[] roles)
+        private async Task CreateUser(UserManager<AppUser> userManager, string username, string[] roles)
         {
             AppUser user = new()
             {
@@ -47,6 +54,34 @@ namespace API.Data
 
             await userManager.CreateAsync(user, "password");
             await userManager.AddToRolesAsync(user, roles);
+        }
+
+        public async Task SeedBookStatus()
+        {
+            if (await _dbContext.Status.AnyAsync()) return;
+
+            try
+            {
+                await CreateStatus("available");
+                await CreateStatus("reserved");
+                await CreateStatus("borrowed");
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Migration failed" + ex.Message);
+                throw;
+            }
+        }
+
+        private async Task CreateStatus(string statusName)
+        {
+            Status status = new Status
+            {
+                Name = statusName
+            };
+
+            await _dbContext.Status.AddAsync(status);
         }
     }
 }

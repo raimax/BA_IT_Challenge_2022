@@ -7,5 +7,7 @@ namespace API.Models
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime LastActive { get; set; } = DateTime.Now;
         public ICollection<AppUserRole> UserRoles { get; set; }
+        public ICollection<ReservedBook>? ReservedBooks { get; set; }
+        public ICollection<BorrowedBook>? BorrowedBooks { get; set; }
     }
 }
