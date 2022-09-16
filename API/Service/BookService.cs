@@ -6,6 +6,7 @@ using API.IService;
 using API.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Service
 {
@@ -28,6 +29,19 @@ namespace API.Service
             await _context.Books.AddAsync(book);
 
             if (await _context.SaveChangesAsync() < 1) throw new BadRequestException("Failed to create a book");
+
+            return _mapper.Map<BookResponseDto>(book);
+        }
+
+        public async Task<BookResponseDto> FindByIdAsync(int id)
+        {
+            Book? book = await _context.Books
+                .Include(x => x.Author)
+                .Include(x => x.Publisher)
+                .Include(x => x.Status)
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            if (book is null) throw new NotFoundException("Book not found");
 
             return _mapper.Map<BookResponseDto>(book);
         }

@@ -7,5 +7,6 @@ namespace API.IService
     {
         Task<PagedList<BookResponseDto>> GetPagedListAsync(BookParams bookParams);
         Task<BookResponseDto> CreateAsync(BookRequestDto bookRequestDto);
+        Task<BookResponseDto> FindByIdAsync(int id);
     }
 }

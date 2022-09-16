@@ -17,6 +17,12 @@ namespace API.Controllers
             _bookService = bookService;
         }
 
+        [HttpGet("{bookId}")]
+        public async Task<ActionResult<BookResponseDto>> Get(int bookId)
+        {
+            return Ok(await _bookService.FindByIdAsync(bookId));
+        }
+
         [HttpGet]
         public async Task<ActionResult<PagedList<BookResponseDto>>> GetAll([FromQuery] BookParams bookParams)
         {
@@ -32,7 +38,7 @@ namespace API.Controllers
         {
             BookResponseDto bookResponseDto = await _bookService.CreateAsync(bookRequestDto);
 
-            return Ok(bookResponseDto);
+            return CreatedAtAction(nameof(Get), new { bookId = bookResponseDto.Id }, bookResponseDto);
         }
     }
 }
