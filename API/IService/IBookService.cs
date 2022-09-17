@@ -10,5 +10,6 @@ namespace API.IService
         Task<BookResponseDto> FindByIdAsync(int id);
         Task ReserveAsync(int bookId);
         Task BorrowAsync(int bookId);
+        Task ReturnAsync(int bookId);
     }
 }

@@ -58,5 +58,14 @@ namespace API.Controllers
 
             return NoContent();
         }
+
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpPut("{bookId}/return")]
+        public async Task<ActionResult> Return(int bookId)
+        {
+            await _bookService.ReturnAsync(bookId);
+
+            return NoContent();
+        }
     }
 }
