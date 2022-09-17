@@ -23,11 +23,14 @@ namespace API.Service
 
         public async Task BorrowAsync(int bookId)
         {
-            AppUser? user = await _context.Users.SingleOrDefaultAsync(x => x.Id == CurrentUserId);
+            AppUser? user = await _context.Users
+                .Include(x => x.BorrowedBooks)
+                .SingleOrDefaultAsync(x => x.Id == CurrentUserId);
             Book? book = await _context.Books
                 .Include(x => x.Status)
                 .SingleOrDefaultAsync(x => x.Id == bookId);
-            BorrowedBook? existingBorrowedBook = await _context.BorrowedBooks.SingleOrDefaultAsync(x => x.BookId == bookId);
+            BorrowedBook? existingBorrowedBook = await _context.BorrowedBooks
+                .SingleOrDefaultAsync(x => x.BookId == bookId);
 
             if (user is null) throw new UnauthorizedException();
             if (book is null) throw new NotFoundException("Book not found");
@@ -43,7 +46,6 @@ namespace API.Service
                     throw new BadRequestException("You cannot borrow a book that is reserved by someone else");
 
                 _context.ReservedBooks.Remove(reservedBook);
-
             }
 
             BorrowedBook borrowedBook = new()
@@ -52,7 +54,7 @@ namespace API.Service
                 UserId = user.Id,
             };
 
-            await _context.BorrowedBooks.AddAsync(borrowedBook);
+            user.BorrowedBooks!.Add(borrowedBook);
             book.StatusId = (int)BookStatus.BORROWED;
 
             if (await _context.SaveChangesAsync() < 1)
@@ -143,17 +145,21 @@ namespace API.Service
 
         public async Task ReserveAsync(int bookId)
         {
-            AppUser? user = await _context.Users.SingleOrDefaultAsync(x => x.Id == CurrentUserId);
+            AppUser? user = await _context.Users
+                .Include(x => x.ReservedBooks)
+                .SingleOrDefaultAsync(x => x.Id == CurrentUserId);
             Book? book = await _context.Books
                 .Include(x => x.Status)
                 .SingleOrDefaultAsync(x => x.Id == bookId);
-            ReservedBook? existingReservedBook = await _context.ReservedBooks.SingleOrDefaultAsync(x => x.BookId == bookId);
 
             if (user is null) throw new UnauthorizedException();
             if (book is null) throw new NotFoundException("Book not found");
-            if (existingReservedBook?.UserId == CurrentUserId) throw new BadRequestException("You already reserved this book");
-            if (book.Status.Id == (int)BookStatus.RESERVED) throw new BadRequestException("Book is already reserved");
-            if (book.Status.Id == (int)BookStatus.BORROWED) throw new BadRequestException("You cannot reserve a borrowed book");
+            if (user.ReservedBooks!.SingleOrDefault(x => x.BookId == bookId) is not null)
+                throw new BadRequestException("You already reserved this book");
+            if (book.Status.Id == (int)BookStatus.RESERVED)
+                throw new BadRequestException("Book is already reserved");
+            if (book.Status.Id == (int)BookStatus.BORROWED)
+                throw new BadRequestException("You cannot reserve a borrowed book");
 
             ReservedBook reservedBook = new()
             {
@@ -161,7 +167,7 @@ namespace API.Service
                 UserId = user.Id,
             };
 
-            await _context.ReservedBooks.AddAsync(reservedBook);
+            user.ReservedBooks!.Add(reservedBook);
             book.StatusId = (int)BookStatus.RESERVED;
 
             if (await _context.SaveChangesAsync() < 1)
@@ -177,7 +183,6 @@ namespace API.Service
             if (existingBorrowedBook is null) throw new NotFoundException("Book is not borrowed");
 
             existingBorrowedBook.Book.StatusId = (int)BookStatus.AVAILABLE;
-            _context.Entry(existingBorrowedBook).State = EntityState.Modified;
             _context.BorrowedBooks.Remove(existingBorrowedBook);
 
             if (await _context.SaveChangesAsync() < 1)
