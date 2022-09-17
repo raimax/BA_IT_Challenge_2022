@@ -1,0 +1,14 @@
+<a routerLink="/">Home</a>
+
+<div *ngIf="accountService.currentUser$ | async">
+  <span>Logged in</span>
+  <button (click)="accountService.logout()">Logout</button>
+</div>
+
+<div *ngIf="!(accountService.currentUser$ | async)">
+  <a routerLink="/login">Login</a>
+  <br />
+  <a routerLink="/register">Register</a>
+</div>
+
+<p>header works</p>

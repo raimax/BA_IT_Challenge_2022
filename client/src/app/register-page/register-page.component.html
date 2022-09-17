@@ -1,0 +1,21 @@
+<form (ngSubmit)="register()" [formGroup]="registerForm">
+  <label for="username">Username</label>
+  <input
+    name="username"
+    [formControl]="registerForm.controls['username']"
+    type="text"
+  />
+  <label for="password">Password</label>
+  <input
+    name="password"
+    [formControl]="registerForm.controls['password']"
+    type="password"
+  />
+  <label for="repeatPassword">Repeat Password</label>
+  <input
+    name="repeatPassword"
+    [formControl]="registerForm.controls['repeatPassword']"
+    type="password"
+  />
+  <button type="submit">Login</button>
+</form>
