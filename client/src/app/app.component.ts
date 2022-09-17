@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from './_models/user';
 import { AccountService } from './_services/account.service';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,14 @@ import { AccountService } from './_services/account.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private accountService: AccountService,
+    private primengConfig: PrimeNGConfig
+  ) {}
 
   ngOnInit(): void {
     this.setCurrentUser();
+    this.primengConfig.ripple = true;
   }
 
   setCurrentUser() {
