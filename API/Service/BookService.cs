@@ -133,11 +133,11 @@ namespace API.Service
             }
             if (!string.IsNullOrWhiteSpace(bookParams.Isbn))
             {
-                books = books.Where(b => b.Isbn.ToLower().Contains(bookParams.Isbn.ToLower()));
+                books = books.Where(b => b.Isbn.ToLower() == bookParams.Isbn.ToLower());
             }
-            if (!string.IsNullOrWhiteSpace(bookParams.Status))
+            if (bookParams.Status >= 1 && bookParams.Status <= 3)
             {
-                books = books.Where(b => b.Status.Name.ToLower() == bookParams.Status.ToLower());
+                books = books.Where(b => b.Status.Id == bookParams.Status);
             }
 
             return await PagedList<BookResponseDto>.CreateAsync(books, bookParams.PageNumber, bookParams.PageSize);
