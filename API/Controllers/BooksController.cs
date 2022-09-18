@@ -25,6 +25,7 @@ namespace API.Controllers
             return Ok(await _bookService.FindByIdAsync(bookId));
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<PagedList<BookResponseDto>>> GetAll([FromQuery] BookParams bookParams)
         {
