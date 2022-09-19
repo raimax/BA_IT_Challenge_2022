@@ -36,6 +36,7 @@ namespace API.Controllers
             return Ok(books);
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost]
         public async Task<ActionResult<BookResponseDto>> Create([FromBody] BookRequestDto bookRequestDto)
         {

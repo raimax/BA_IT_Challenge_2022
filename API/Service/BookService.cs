@@ -63,8 +63,18 @@ namespace API.Service
 
         public async Task<BookResponseDto> CreateAsync(BookRequestDto bookRequestDto)
         {
+            Author? author = await _context.Authors
+                .SingleOrDefaultAsync(x =>
+                    x.FirstName.ToLower() == bookRequestDto.Author.FirstName.ToLower() &&
+                    x.LastName.ToLower() == bookRequestDto.Author.LastName.ToLower());
+
+            Publisher? publisher = await _context.Publishers
+                .SingleOrDefaultAsync(x => x.Name.ToLower() == bookRequestDto.Publisher.Name.ToLower());
+
             Book book = _mapper.Map<Book>(bookRequestDto);
             book.StatusId = (int)BookStatus.AVAILABLE;
+            if (author is not null) book.Author = author;
+            if (publisher is not null) book.Publisher = publisher;
 
             await _context.Books.AddAsync(book);
 
@@ -227,6 +237,11 @@ namespace API.Service
             .AsQueryable();
 
             return await PagedList<BorrowedBookResponseDto>.CreateAsync(borrowedBooks, paginationParams.PageNumber, paginationParams.PageSize);
+        }
+
+        public Task AddAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

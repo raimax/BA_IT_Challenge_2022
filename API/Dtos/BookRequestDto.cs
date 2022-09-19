@@ -7,9 +7,9 @@ namespace API.Dtos
         [Required]
         public string Title { get; set; }
         [Required]
-        public int AuthorId { get; set; }
+        public AuthorRequestDto Author { get; set; }
         [Required]
-        public int PublisherId { get; set; }
+        public PublisherRequestDto Publisher { get; set; }
         [Required]
         public DateTime PublishingDate { get; set; }
         [Required]
