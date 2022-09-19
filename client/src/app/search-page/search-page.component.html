@@ -94,13 +94,29 @@
 </p-messages>
 
 <div *ngIf="pagination" class="book_list">
-  <div
-    app-book-tr
+  <ul class="book_list_header">
+    <li>Title</li>
+    <li>Author</li>
+    <li>Publisher</li>
+    <li>Date</li>
+    <li>Genre</li>
+    <li>ISBN</li>
+    <li>Status</li>
+    <li *ngIf="accountService.currentUser$ | async">Action</li>
+  </ul>
+  <app-book-tr
     *ngFor="let book of books"
     [book]="book"
     (onReserve)="reserveBook($event)"
     (onBorrow)="borrowBook($event)"
-  ></div>
+  ></app-book-tr>
+  <p-paginator
+	*ngIf="books.length > 0"
+    [rows]="pagination.itemsPerPage"
+    [totalRecords]="pagination.totalItems"
+    (onPageChange)="paginate($event)"
+    [rowsPerPageOptions]="[10, 20, 30]"
+  ></p-paginator>
 </div>
 
 <div class="no_books" *ngIf="books.length == 0 && pagination">

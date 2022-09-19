@@ -1,11 +1,15 @@
-.available {
-  color: var(--green-500);
-}
+.book_card {
+  display: flex;
+  border-bottom: 1px solid #d4d4d8;
+  align-items: center;
+	height: 48px;
 
-.reserved {
-	color: var(--orange-500);
-}
+  div:not(:last-child) {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
 
-.borrowed {
-	color: var(--red-500);
+	div {
+		padding: 14px;
+	}
 }

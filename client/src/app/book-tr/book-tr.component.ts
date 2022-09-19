@@ -4,7 +4,7 @@ import { Book } from '../_models/book';
 import { AccountService } from '../_services/account.service';
 
 @Component({
-  selector: '[app-book-tr]',
+  selector: 'app-book-tr',
   templateUrl: './book-tr.component.html',
   styleUrls: ['./book-tr.component.scss'],
 })
