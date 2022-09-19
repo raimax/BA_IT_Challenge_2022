@@ -31,6 +31,9 @@ import { MessageService } from 'primeng/api';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
+import { FooterComponent } from './footer/footer.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
   declarations: [
@@ -43,6 +46,8 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
     BookTrComponent,
     NotFoundComponent,
     ServerErrorComponent,
+    FooterComponent,
+    AdminPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +70,7 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
     MenuModule,
     TagModule,
     ToastModule,
+    TabMenuModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

@@ -1,0 +1,9 @@
+<div class="admin_page">
+  <p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
+  <div *ngIf="activeItem.label === 'Reserved Books'" class="admin_page_active">
+    reserved
+  </div>
+	<div *ngIf="activeItem.label === 'Borrowed Books'" class="admin_page_active">
+    borrowed
+  </div>
+</div>
