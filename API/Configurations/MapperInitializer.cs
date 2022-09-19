@@ -16,6 +16,12 @@ namespace API.Configurations
             CreateMap<Status, StatusResponseDto>().ReverseMap();
             CreateMap<Book, BookRequestDto>().ReverseMap();
             CreateMap<Book, BookResponseDto>().ReverseMap();
+            CreateMap<ReservedBook, ReservedBookResponseDto>()
+                .ForMember(dest => dest.ReservedBy, src => src.MapFrom(x => x.User.UserName))
+                .ReverseMap();
+            CreateMap<BorrowedBook, BorrowedBookResponseDto>()
+                .ForMember(dest => dest.ReservedBy, src => src.MapFrom(x => x.User.UserName))
+                .ReverseMap();
         }
     }
 }

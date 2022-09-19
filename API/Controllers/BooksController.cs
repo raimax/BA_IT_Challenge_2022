@@ -68,5 +68,27 @@ namespace API.Controllers
 
             return NoContent();
         }
+
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpGet("reserved")]
+        public async Task<ActionResult<PagedList<ReservedBookResponseDto>>> GetReserved([FromQuery] PaginationParams paginationParams)
+        {
+            PagedList<ReservedBookResponseDto> reservedBooks = await _bookService.GetReservedPagedListAsync(paginationParams);
+
+            Response.AddPaginationHeader(reservedBooks.CurrentPage, reservedBooks.PageSize, reservedBooks.TotalCount, reservedBooks.TotalPages);
+
+            return Ok(reservedBooks);
+        }
+
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpGet("borrowed")]
+        public async Task<ActionResult<PagedList<BorrowedBookResponseDto>>> GetBorrowed([FromQuery] PaginationParams paginationParams)
+        {
+            PagedList<BorrowedBookResponseDto> borrowedBooks = await _bookService.GetBorrowedPagedListAsync(paginationParams);
+
+            Response.AddPaginationHeader(borrowedBooks.CurrentPage, borrowedBooks.PageSize, borrowedBooks.TotalCount, borrowedBooks.TotalPages);
+
+            return Ok(borrowedBooks);
+        }
     }
 }

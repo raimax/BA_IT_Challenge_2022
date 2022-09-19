@@ -188,5 +188,23 @@ namespace API.Service
             if (await _context.SaveChangesAsync() < 1)
                 throw new BadRequestException("Failed to return a book");
         }
+
+        public async Task<PagedList<ReservedBookResponseDto>> GetReservedPagedListAsync(PaginationParams paginationParams)
+        {
+            IQueryable<ReservedBookResponseDto> reservedBooks = _context.ReservedBooks
+                .ProjectTo<ReservedBookResponseDto>(_mapper.ConfigurationProvider)
+            .AsQueryable();
+
+            return await PagedList<ReservedBookResponseDto>.CreateAsync(reservedBooks, paginationParams.PageNumber, paginationParams.PageSize);
+        }
+
+        public async Task<PagedList<BorrowedBookResponseDto>> GetBorrowedPagedListAsync(PaginationParams paginationParams)
+        {
+            IQueryable<BorrowedBookResponseDto> borrowedBooks = _context.BorrowedBooks
+                .ProjectTo<BorrowedBookResponseDto>(_mapper.ConfigurationProvider)
+            .AsQueryable();
+
+            return await PagedList<BorrowedBookResponseDto>.CreateAsync(borrowedBooks, paginationParams.PageNumber, paginationParams.PageSize);
+        }
     }
 }
