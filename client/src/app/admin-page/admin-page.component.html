@@ -1,9 +1,64 @@
 <div class="admin_page">
   <p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
   <div *ngIf="activeItem.label === 'Reserved Books'" class="admin_page_active">
-    reserved
+    <div *ngIf="pagination" class="book_list">
+      <ul class="book_list_header">
+        <li>Title</li>
+        <li>Author</li>
+        <li>Publisher</li>
+        <li>Date</li>
+        <li>Genre</li>
+        <li>ISBN</li>
+        <li>Status</li>
+        <li>Action</li>
+      </ul>
+      <app-book-tr
+        *ngFor="let reservedBook of reservedBooks"
+        [book]="reservedBook.book"
+        [association]="reservedBook.reservedBy"
+        (onReturn)="returnBook($event)"
+      ></app-book-tr>
+      <p-paginator
+        *ngIf="reservedBooks.length > 0"
+        [rows]="pagination.itemsPerPage"
+        [totalRecords]="pagination.totalItems"
+        (onPageChange)="paginate($event)"
+        [rowsPerPageOptions]="[10, 20, 30]"
+      ></p-paginator>
+    </div>
+    <div class="no_books" *ngIf="reservedBooks.length == 0 && pagination">
+      There are no reserved books
+    </div>
   </div>
-	<div *ngIf="activeItem.label === 'Borrowed Books'" class="admin_page_active">
-    borrowed
+  <div *ngIf="activeItem.label === 'Borrowed Books'" class="admin_page_active">
+    <div *ngIf="pagination" class="book_list">
+      <ul class="book_list_header">
+        <li>Title</li>
+        <li>Author</li>
+        <li>Publisher</li>
+        <li>Date</li>
+        <li>Genre</li>
+        <li>ISBN</li>
+        <li>Status</li>
+        <li>Action</li>
+      </ul>
+      <app-book-tr
+        *ngFor="let borrowedBook of borrowedBooks"
+        [book]="borrowedBook.book"
+        [association]="borrowedBook.borrowedBy"
+        (onReturn)="returnBook($event)"
+      ></app-book-tr>
+      <p-paginator
+        *ngIf="borrowedBooks.length > 0"
+        [rows]="pagination.itemsPerPage"
+        [totalRecords]="pagination.totalItems"
+        (onPageChange)="paginate($event)"
+        [rowsPerPageOptions]="[10, 20, 30]"
+      ></p-paginator>
+    </div>
+
+    <div class="no_books" *ngIf="borrowedBooks.length == 0 && pagination">
+      There are no borrowed books
+    </div>
   </div>
 </div>

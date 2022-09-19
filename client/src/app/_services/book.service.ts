@@ -7,6 +7,9 @@ import {
 } from '../_helpers/paginationHelper';
 import { Book } from '../_models/book';
 import { BookParams } from '../_models/bookParams';
+import { BorrowedBook } from '../_models/borrowedBook';
+import { Paged } from '../_models/paged';
+import { ReservedBook } from '../_models/reservedBook';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +40,32 @@ export class BookService {
     );
   }
 
+  getReservedBooks(pagedParams: Paged) {
+    let params = getPaginationHeaders(
+      pagedParams.pageNumber,
+      pagedParams.pageSize
+    );
+
+    return getPaginatedResult<ReservedBook[]>(
+      this.baseUrl + 'books/reserved',
+      params,
+      this.http
+    );
+  }
+
+  getBorrowedBooks(pagedParams: Paged) {
+    let params = getPaginationHeaders(
+      pagedParams.pageNumber,
+      pagedParams.pageSize
+    );
+
+    return getPaginatedResult<BorrowedBook[]>(
+      this.baseUrl + 'books/borrowed',
+      params,
+      this.http
+    );
+  }
+
   reserveBook(bookId: number) {
     return this.http.put(
       this.baseUrl + 'books/' + `${bookId}` + '/reserve',
@@ -46,5 +75,9 @@ export class BookService {
 
   borrowBook(bookId: number) {
     return this.http.put(this.baseUrl + 'books/' + `${bookId}` + '/borrow', {});
+  }
+
+  returnBook(bookId: number) {
+    return this.http.put(this.baseUrl + 'books/' + `${bookId}` + '/return', {});
   }
 }

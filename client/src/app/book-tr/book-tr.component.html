@@ -16,7 +16,10 @@
           ? 'warning'
           : 'danger'
       }}"
-      [value]="book.status.name"
+      value="{{ book.status.name }} {{association ? 'by {{association}}': '' }}"
+      [value]="
+        association ? book.status.name + ' by ' + association : book.status.name
+      "
     ></p-tag>
   </div>
   <div *ngIf="accountService.currentUser$ | async">
