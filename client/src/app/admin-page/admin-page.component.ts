@@ -45,6 +45,13 @@ export class AdminPageComponent implements OnInit {
           this.getBorrowedBooks();
         },
       },
+      {
+        label: 'Add Book',
+        icon: 'pi pi-fw pi-plus',
+        command: () => {
+          this.activeItem = this.items[2];
+        },
+      },
     ];
     this.activeItem = this.items[0];
 
