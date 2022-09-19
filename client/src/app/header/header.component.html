@@ -4,6 +4,15 @@
   </a>
 
   <div class="auth_menu" *ngIf="accountService.currentUser$ | async as user">
+    <button
+      *ngIf="user.roles.includes('Admin')"
+      routerLink="/admin"
+      pButton
+      pRipple
+      type="button"
+      label="Admin Panel"
+      class="p-button-help p-button-text p-button-sm"
+    ></button>
     <p-avatar icon="pi pi-user" shape="circle"></p-avatar>
     <span class="username">{{ user.username }}</span>
     <button
