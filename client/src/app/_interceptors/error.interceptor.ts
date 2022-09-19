@@ -28,9 +28,19 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (error !== null) {
           switch (error.status) {
             case 400:
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: error.error.message,
+              });
               break;
             case 401:
               this.accountService.logout();
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: error.error,
+              });
               break;
             case 404:
               this.router.navigateByUrl('/not-found');

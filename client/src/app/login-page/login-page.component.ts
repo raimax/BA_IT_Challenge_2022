@@ -29,10 +29,9 @@ export class LoginPageComponent implements OnInit {
     this.accountService.login(this.loginForm.value).subscribe({
       next: () => {
         this.isLoading = false;
-        this.router.navigateByUrl('/search');
+        this.router.navigateByUrl('/');
       },
       error: (error) => {
-        console.log(error);
         this.isLoading = false;
       },
     });
