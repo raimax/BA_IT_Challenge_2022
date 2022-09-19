@@ -6,7 +6,7 @@ import { Pagination } from '../_models/pagination';
 import { BookStatus, Status } from '../_models/status';
 import { AccountService } from '../_services/account.service';
 import { BookService } from '../_services/book.service';
-import { MenuItem } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-search-page',
@@ -26,7 +26,8 @@ export class SearchPageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private bookService: BookService,
-    public accountService: AccountService
+    public accountService: AccountService,
+    private messageService: MessageService
   ) {
     this.status = [
       { name: 'all', id: 0 },
@@ -89,13 +90,22 @@ export class SearchPageComponent implements OnInit {
   reserveBook(bookId: number) {
     this.isLoading = true;
     this.bookService.reserveBook(bookId).subscribe({
-      next: (response) => {
+      next: () => {
+        this.search();
         this.isLoading = false;
-        console.log(response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Book reserved',
+        });
       },
       error: (error) => {
         this.isLoading = false;
-        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error.message,
+        });
       },
     });
   }
@@ -103,13 +113,22 @@ export class SearchPageComponent implements OnInit {
   borrowBook(bookId: number) {
     this.isLoading = true;
     this.bookService.borrowBook(bookId).subscribe({
-      next: (response) => {
+      next: () => {
+        this.search();
         this.isLoading = false;
-        console.log(response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Book borrowed',
+        });
       },
       error: (error) => {
         this.isLoading = false;
-        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error.message,
+        });
       },
     });
   }

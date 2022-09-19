@@ -26,6 +26,12 @@ import { PaginatorModule } from 'primeng/paginator';
 import { MessagesModule } from 'primeng/messages';
 import { MenuModule } from 'primeng/menu';
 import { BookTrComponent } from './book-tr/book-tr.component';
+import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { ErrorInterceptor } from './_interceptors/error.interceptor';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { ServerErrorComponent } from './errors/server-error/server-error.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +43,8 @@ import { BookTrComponent } from './book-tr/book-tr.component';
     TextInputComponent,
     SearchPageComponent,
     BookTrComponent,
+    NotFoundComponent,
+    ServerErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,9 +65,13 @@ import { BookTrComponent } from './book-tr/book-tr.component';
     PaginatorModule,
     MessagesModule,
     MenuModule,
+    TagModule,
+    ToastModule,
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    MessageService,
   ],
   bootstrap: [AppComponent],
 })
