@@ -176,14 +176,36 @@ namespace API.Service
 
         public async Task ReturnAsync(int bookId)
         {
-            BorrowedBook? existingBorrowedBook = await _context.BorrowedBooks
-                .Include(x => x.Book)
-                .SingleOrDefaultAsync(x => x.BookId == bookId);
+            Book? book = await _context.Books
+                .Include(x => x.Status)
+                .SingleOrDefaultAsync(x => x.Id == bookId);
 
-            if (existingBorrowedBook is null) throw new NotFoundException("Book is not borrowed");
+            if (book is null) throw new NotFoundException("Book not found");
 
-            existingBorrowedBook.Book.StatusId = (int)BookStatus.AVAILABLE;
-            _context.BorrowedBooks.Remove(existingBorrowedBook);
+            switch (book.Status.Id)
+            {
+                case (int)BookStatus.RESERVED:
+                    ReservedBook? reservedBook = await _context.ReservedBooks
+                        .SingleOrDefaultAsync(x => x.BookId == bookId);
+
+                    if (reservedBook is null) throw new NotFoundException("Book is not reserved");
+
+                    _context.ReservedBooks.Remove(reservedBook);
+
+                    break;
+                case (int)BookStatus.BORROWED:
+                    BorrowedBook? borrowedBook = await _context.BorrowedBooks
+                        .SingleOrDefaultAsync(x => x.BookId == bookId);
+
+                    if (borrowedBook is null) throw new NotFoundException("Book is not borrowed");
+
+                    _context.BorrowedBooks.Remove(borrowedBook);
+                    break;
+                default:
+                    throw new BadRequestException("Book is not reserved or borrowed");
+            }
+
+            book.StatusId = (int)BookStatus.AVAILABLE;
 
             if (await _context.SaveChangesAsync() < 1)
                 throw new BadRequestException("Failed to return a book");

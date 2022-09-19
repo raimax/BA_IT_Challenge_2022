@@ -20,7 +20,7 @@ namespace API.Configurations
                 .ForMember(dest => dest.ReservedBy, src => src.MapFrom(x => x.User.UserName))
                 .ReverseMap();
             CreateMap<BorrowedBook, BorrowedBookResponseDto>()
-                .ForMember(dest => dest.ReservedBy, src => src.MapFrom(x => x.User.UserName))
+                .ForMember(dest => dest.BorrowedBy, src => src.MapFrom(x => x.User.UserName))
                 .ReverseMap();
         }
     }
