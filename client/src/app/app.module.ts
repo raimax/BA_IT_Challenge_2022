@@ -9,7 +9,6 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { RegisterPageComponent } from './register-page/register-page.component';
-import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
@@ -39,7 +38,6 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
     HeaderComponent,
     LoginPageComponent,
     RegisterPageComponent,
-    LandingPageComponent,
     TextInputComponent,
     SearchPageComponent,
     BookTrComponent,
