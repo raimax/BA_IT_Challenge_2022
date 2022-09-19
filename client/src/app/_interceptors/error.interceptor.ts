@@ -27,6 +27,8 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error !== null) {
           switch (error.status) {
+            case 400:
+              break;
             case 401:
               this.accountService.logout();
               break;
