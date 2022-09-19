@@ -1,14 +1,38 @@
-<a routerLink="/">Home</a>
+<header>
+  <a routerLink="/">
+    <img class="site_logo" src="assets/images/booksspot_logo.png" alt="" />
+  </a>
 
-<div *ngIf="accountService.currentUser$ | async">
-  <span>Logged in</span>
-  <button (click)="accountService.logout()">Logout</button>
-</div>
+  <div class="auth_menu" *ngIf="accountService.currentUser$ | async as user">
+    <p-avatar icon="pi pi-user" shape="circle"></p-avatar>
+    <span class="username">{{ user.username }}</span>
+    <button
+      pButton
+      pRipple
+      class="p-button-sm p-button-danger"
+      icon="pi pi-sign-out"
+      iconPos="left"
+      label="Logout"
+      (click)="accountService.logout()"
+    ></button>
+  </div>
 
-<div *ngIf="!(accountService.currentUser$ | async)">
-  <a routerLink="/login">Login</a>
-  <br />
-  <a routerLink="/register">Register</a>
-</div>
-
-<p>header works</p>
+  <div class="auth_menu" *ngIf="!(accountService.currentUser$ | async)">
+    <button
+      routerLink="/login"
+      pButton
+      pRipple
+      type="button"
+      label="Login"
+      class="p-button-secondary p-button-text p-button-sm"
+    ></button>
+    <button
+      routerLink="/register"
+      pButton
+      pRipple
+      type="button"
+      label="Register"
+      class="p-button-sm"
+    ></button>
+  </div>
+</header>

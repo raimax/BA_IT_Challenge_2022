@@ -1,21 +1,30 @@
-<form (ngSubmit)="register()" [formGroup]="registerForm">
-  <label for="username">Username</label>
-  <input
-    name="username"
-    [formControl]="registerForm.controls['username']"
-    type="text"
-  />
-  <label for="password">Password</label>
-  <input
-    name="password"
-    [formControl]="registerForm.controls['password']"
-    type="password"
-  />
-  <label for="repeatPassword">Repeat Password</label>
-  <input
-    name="repeatPassword"
-    [formControl]="registerForm.controls['repeatPassword']"
-    type="password"
-  />
-  <button type="submit">Login</button>
-</form>
+<h1>Register</h1>
+
+<div class="form_container">
+  <form (ngSubmit)="register()" [formGroup]="registerForm">
+    <app-text-input
+      [formControl]="registerForm.controls['username']"
+      label="Username"
+      type="text"
+    ></app-text-input>
+    <app-text-input
+      [formControl]="registerForm.controls['password']"
+      label="Password"
+      type="password"
+    ></app-text-input>
+    <app-text-input
+      [formControl]="registerForm.controls['repeatPassword']"
+      label="Repeat Password"
+      type="password"
+    ></app-text-input>
+    <button
+      pButton
+      pRipple
+      type="submit"
+      label="Register"
+      class="p-button-sm"
+      [disabled]="!registerForm.valid"
+      [loading]="isLoading"
+    ></button>
+  </form>
+</div>

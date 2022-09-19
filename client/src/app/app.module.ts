@@ -13,6 +13,19 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
+import { TextInputComponent } from './_forms/text-input/text-input.component';
+import { AvatarModule } from 'primeng/avatar';
+import { SearchPageComponent } from './search-page/search-page.component';
+import { DividerModule } from 'primeng/divider';
+import { DropdownModule } from 'primeng/dropdown';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarModule } from 'primeng/calendar';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { TableModule } from 'primeng/table';
+import { PaginatorModule } from 'primeng/paginator';
+import { MessagesModule } from 'primeng/messages';
+import { MenuModule } from 'primeng/menu';
+import { BookTrComponent } from './book-tr/book-tr.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +34,9 @@ import { InputTextModule } from 'primeng/inputtext';
     LoginPageComponent,
     RegisterPageComponent,
     LandingPageComponent,
+    TextInputComponent,
+    SearchPageComponent,
+    BookTrComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,6 +47,16 @@ import { InputTextModule } from 'primeng/inputtext';
     ButtonModule,
     RippleModule,
     InputTextModule,
+    AvatarModule,
+    DividerModule,
+    DropdownModule,
+    BrowserAnimationsModule,
+    CalendarModule,
+    ToggleButtonModule,
+    TableModule,
+    PaginatorModule,
+    MessagesModule,
+    MenuModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

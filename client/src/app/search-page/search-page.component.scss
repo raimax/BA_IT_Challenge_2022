@@ -1,0 +1,28 @@
+.advanced_search_btn_container {
+	margin: 30px 0;
+	width: 400px;
+}
+
+.book_list {
+  width: 100%;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 1rem;
+}
+
+.no_books {
+	margin: 20px 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-weight: 500;
+	font-size: 1.1rem;
+
+	img {
+		width: 200px;
+		margin-bottom: 20px;
+	}
+}

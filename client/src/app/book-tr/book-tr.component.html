@@ -1,0 +1,24 @@
+<p-menu #menu [popup]="true" [model]="bookActions"></p-menu>
+
+<div>{{ book.title }}</div>
+<div>{{ book.author.firstName }} {{ book.author.lastName }}</div>
+<div>{{ book.publisher.name }}</div>
+<div>{{ book.publishingDate | date }}</div>
+<div>{{ book.genre }}</div>
+<div>{{ book.isbn }}</div>
+<div
+  [class.borrowed]="book.status.id == 3"
+  [class.reserved]="book.status.id == 2"
+  [class.available]="book.status.id == 1"
+>
+  {{ book.status.name }}
+</div>
+<div *ngIf="accountService.currentUser$ | async">
+  <button
+    type="button"
+    pButton
+    icon="pi pi-list"
+    (click)="menu.toggle($event)"
+    class="p-button-sm"
+  ></button>
+</div>

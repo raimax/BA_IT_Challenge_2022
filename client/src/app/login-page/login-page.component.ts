@@ -9,6 +9,8 @@ import { AccountService } from '../_services/account.service';
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent implements OnInit {
+  isLoading: boolean = false;
+
   constructor(
     private accountService: AccountService,
     private router: Router,
@@ -23,12 +25,15 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
+    this.isLoading = true;
     this.accountService.login(this.loginForm.value).subscribe({
       next: () => {
-        this.router.navigateByUrl('/');
+        this.isLoading = false;
+        this.router.navigateByUrl('/search');
       },
       error: (error) => {
         console.log(error);
+        this.isLoading = false;
       },
     });
   }
