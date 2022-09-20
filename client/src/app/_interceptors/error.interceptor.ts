@@ -42,6 +42,13 @@ export class ErrorInterceptor implements HttpInterceptor {
                 detail: error.error,
               });
               break;
+            case 403:
+							this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: "Unauthorized",
+              });
+              break;
             case 404:
               this.router.navigateByUrl('/not-found');
               break;
