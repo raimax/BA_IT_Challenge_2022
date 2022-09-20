@@ -56,7 +56,9 @@ export class SearchPageComponent implements OnInit {
       title: this.searchForm.controls['title'].value,
       author: this.searchForm.controls['author'].value,
       publisher: this.searchForm.controls['publisher'].value,
-      publishingDate: new Date(this.searchForm.controls['publishingDate'].value!),
+      publishingDate: new Date(
+        this.searchForm.controls['publishingDate'].value!
+      ),
       genre: this.searchForm.controls['genre'].value,
       isbn: this.searchForm.controls['isbn'].value,
       status: this.searchForm.controls['status'].value,
