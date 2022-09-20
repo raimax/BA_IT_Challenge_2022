@@ -24,7 +24,7 @@ import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { MessagesModule } from 'primeng/messages';
 import { MenuModule } from 'primeng/menu';
-import { BookTrComponent } from './book-tr/book-tr.component';
+import { BookComponent } from './book/book.component';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -43,7 +43,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
     RegisterPageComponent,
     TextInputComponent,
     SearchPageComponent,
-    BookTrComponent,
+    BookComponent,
     NotFoundComponent,
     ServerErrorComponent,
     FooterComponent,

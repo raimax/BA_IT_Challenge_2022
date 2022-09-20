@@ -12,12 +12,12 @@
         <li>Status</li>
         <li>Action</li>
       </ul>
-      <app-book-tr
+      <app-book
         *ngFor="let reservedBook of reservedBooks"
         [book]="reservedBook.book"
         [association]="reservedBook.reservedBy"
         (onReturn)="returnBook($event)"
-      ></app-book-tr>
+      ></app-book>
       <p-paginator
         *ngIf="reservedBooks.length > 0"
         [rows]="pagination.itemsPerPage"
@@ -42,12 +42,12 @@
         <li>Status</li>
         <li>Action</li>
       </ul>
-      <app-book-tr
+      <app-book
         *ngFor="let borrowedBook of borrowedBooks"
         [book]="borrowedBook.book"
         [association]="borrowedBook.borrowedBy"
         (onReturn)="returnBook($event)"
-      ></app-book-tr>
+      ></app-book>
       <p-paginator
         *ngIf="borrowedBooks.length > 0"
         [rows]="pagination.itemsPerPage"

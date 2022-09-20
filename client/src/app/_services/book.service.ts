@@ -84,4 +84,8 @@ export class BookService {
   addBook(model: Partial<Book>) {
     return this.http.post(this.baseUrl + 'books', model);
   }
+
+  deleteBook(bookId: number) {
+    return this.http.delete(this.baseUrl + 'books/' + bookId);
+  }
 }

@@ -49,7 +49,7 @@ export class SearchPageComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  search() {
+  search(newSearch: boolean = false) {
     this.isLoading = true;
 
     let bookParams: BookParams = {
@@ -60,7 +60,7 @@ export class SearchPageComponent implements OnInit {
       genre: this.searchForm.controls['genre'].value,
       isbn: this.searchForm.controls['isbn'].value,
       status: this.searchForm.controls['status'].value,
-      pageNumber: this.pageNumber,
+      pageNumber: newSearch ? 1 : this.pageNumber,
       pageSize: this.pageSize,
     };
 
@@ -91,21 +91,15 @@ export class SearchPageComponent implements OnInit {
     this.isLoading = true;
     this.bookService.reserveBook(bookId).subscribe({
       next: () => {
-        this.search();
-        this.isLoading = false;
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
           detail: 'Book reserved',
         });
+        this.search();
       },
-      error: (error) => {
+      error: () => {
         this.isLoading = false;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: error.error.message,
-        });
       },
     });
   }
@@ -114,21 +108,32 @@ export class SearchPageComponent implements OnInit {
     this.isLoading = true;
     this.bookService.borrowBook(bookId).subscribe({
       next: () => {
-        this.search();
-        this.isLoading = false;
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
           detail: 'Book borrowed',
         });
+        this.search();
       },
-      error: (error) => {
+      error: () => {
         this.isLoading = false;
+      },
+    });
+  }
+
+  deleteBook(bookId: number) {
+    this.isLoading = true;
+    this.bookService.deleteBook(bookId).subscribe({
+      next: () => {
         this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: error.error.message,
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Book deleted',
         });
+        this.search();
+      },
+      error: () => {
+        this.isLoading = false;
       },
     });
   }

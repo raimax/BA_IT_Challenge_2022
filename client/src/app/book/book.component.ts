@@ -1,25 +1,34 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { map } from 'rxjs';
 import { Book } from '../_models/book';
 import { BookStatus } from '../_models/status';
+import { User } from '../_models/user';
 import { AccountService } from '../_services/account.service';
 
 @Component({
-  selector: 'app-book-tr',
-  templateUrl: './book-tr.component.html',
-  styleUrls: ['./book-tr.component.scss'],
+  selector: 'app-book',
+  templateUrl: './book.component.html',
+  styleUrls: ['./book.component.scss'],
 })
-export class BookTrComponent implements OnInit {
+export class BookComponent implements OnInit {
   @Input() book!: Book;
   @Input() association: string | null = null;
   @Output() onReserve = new EventEmitter<number>();
   @Output() onBorrow = new EventEmitter<number>();
   @Output() onReturn = new EventEmitter<Book>();
+  @Output() onDelete = new EventEmitter<number>();
   bookActions: MenuItem[] = [];
+  currentuser: User | null = null;
 
   constructor(public accountService: AccountService) {}
 
   ngOnInit(): void {
+    this.accountService.currentUser$.pipe(
+      map((response) => {
+        this.currentuser = response;
+      })
+    );
     if (!this.association) {
       this.bookActions = [
         {
@@ -35,6 +44,14 @@ export class BookTrComponent implements OnInit {
           command: () => {
             this.onBorrow.emit(this.book.id);
           },
+        },
+        {
+          label: 'Delete',
+          icon: 'pi pi-fw pi-times',
+          command: () => {
+            this.onDelete.emit(this.book.id);
+          },
+          visible: this.currentuser?.roles.includes('Admin'),
         },
       ];
     } else {

@@ -4,7 +4,7 @@
 </div>
 
 <div class="form_container">
-  <form (ngSubmit)="search()" [formGroup]="searchForm">
+  <form (ngSubmit)="search(true)" [formGroup]="searchForm">
     <app-text-input
       [formControl]="searchForm.controls['title']"
       label="Title"
@@ -109,12 +109,13 @@
     <li>Status</li>
     <li *ngIf="accountService.currentUser$ | async">Action</li>
   </ul>
-  <app-book-tr
+  <app-book
     *ngFor="let book of books"
     [book]="book"
     (onReserve)="reserveBook($event)"
     (onBorrow)="borrowBook($event)"
-  ></app-book-tr>
+    (onDelete)="deleteBook($event)"
+  ></app-book>
   <p-paginator
     *ngIf="books.length > 0"
     [rows]="pagination.itemsPerPage"
