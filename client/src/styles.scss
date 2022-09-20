@@ -78,6 +78,11 @@ form {
   }
 }
 
+.form_group {
+	display: flex;
+	gap: 20px;
+}
+
 @media only screen and (max-width: 1024px) {
   .book_list_header {
 		display: none;

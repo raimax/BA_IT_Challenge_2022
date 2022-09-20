@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Book } from '../_models/book';
 import { BorrowedBook } from '../_models/borrowedBook';
@@ -22,9 +23,20 @@ export class AdminPageComponent implements OnInit {
   reservedBooks: ReservedBook[] = [];
   borrowedBooks: BorrowedBook[] = [];
 
+  addBookForm = this.fb.group({
+    title: ['', [Validators.required]],
+    authorFirstName: ['', [Validators.required]],
+    authorLastName: ['', [Validators.required]],
+    publisher: ['', [Validators.required]],
+    publishingDate: ['', [Validators.required]],
+    genre: ['', [Validators.required]],
+    isbn: ['', [Validators.required]],
+  });
+
   constructor(
     private bookService: BookService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -122,6 +134,40 @@ export class AdminPageComponent implements OnInit {
           detail: `Book ${
             book.status.id == BookStatus.RESERVED ? 'un-reserved' : 'returned'
           }`,
+        });
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  addBook() {
+    this.isLoading = true;
+
+    const book: Partial<Book> = {
+      title: this.addBookForm.controls['title'].value!,
+      author: {
+        id: 0,
+        firstName: this.addBookForm.controls['authorFirstName'].value!,
+        lastName: this.addBookForm.controls['authorLastName'].value!,
+      },
+      publisher: { id: 0, name: this.addBookForm.controls['publisher'].value! },
+      publishingDate: new Date(
+        this.addBookForm.controls['publishingDate'].value!
+      ),
+      genre: this.addBookForm.controls['genre'].value!,
+      isbn: this.addBookForm.controls['isbn'].value!,
+    };
+
+    this.bookService.addBook(book).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.addBookForm.reset();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Book Added',
         });
       },
       error: () => {

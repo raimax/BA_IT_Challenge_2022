@@ -80,4 +80,8 @@ export class BookService {
   returnBook(bookId: number) {
     return this.http.put(this.baseUrl + 'books/' + `${bookId}` + '/return', {});
   }
+
+  addBook(model: Partial<Book>) {
+    return this.http.post(this.baseUrl + 'books', model);
+  }
 }

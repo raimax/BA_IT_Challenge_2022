@@ -62,7 +62,66 @@
     </div>
   </div>
 
-	<div *ngIf="activeItem.label === 'Add Book'" class="admin_page_active">
-    <p>add book</p>
+  <div *ngIf="activeItem.label === 'Add Book'" class="admin_page_active">
+    <div class="form_container">
+      <form (ngSubmit)="addBook()" [formGroup]="addBookForm">
+        <app-text-input
+          [formControl]="addBookForm.controls['title']"
+          label="Title"
+          type="text"
+          placeholder="Enter book title"
+        ></app-text-input>
+				<div class="form_group">
+					<app-text-input
+          [formControl]="addBookForm.controls['authorFirstName']"
+          label="Author's First Name"
+          type="text"
+          placeholder="Enter author's first name"
+        ></app-text-input>
+				<app-text-input
+          [formControl]="addBookForm.controls['authorLastName']"
+          label="Author's Last name"
+          type="text"
+          placeholder="Enter author's last name"
+        ></app-text-input>
+				</div>
+        <app-text-input
+          [formControl]="addBookForm.controls['publisher']"
+          label="Publisher"
+          type="text"
+          placeholder="Enter Publisher's name"
+        ></app-text-input>
+        <label for="publishingDate">Publishing Date</label>
+        <p-calendar
+          id="publishingDate"
+          formControlName="publishingDate"
+          placeholder="Click to select date"
+          class="p-inputtext-sm"
+        ></p-calendar>
+        <app-text-input
+          [formControl]="addBookForm.controls['genre']"
+          label="Genre"
+          type="text"
+          placeholder="Enter genre"
+        ></app-text-input>
+        <app-text-input
+          [formControl]="addBookForm.controls['isbn']"
+          label="ISBN"
+          type="text"
+          placeholder="Enter ISBN"
+        ></app-text-input>
+
+        <button
+          pButton
+          pRipple
+          type="submit"
+          label="Add Book"
+          class="p-button-sm"
+          icon="pi pi-search"
+          [disabled]="!addBookForm.valid || isLoading"
+          [loading]="isLoading"
+        ></button>
+      </form>
+    </div>
   </div>
 </div>
