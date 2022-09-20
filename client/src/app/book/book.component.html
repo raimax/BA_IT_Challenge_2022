@@ -1,0 +1,44 @@
+<p-menu #menu [popup]="true" [model]="bookActions"></p-menu>
+
+<div class="book_card">
+  <div><span class="responsive_header">Title</span>{{ book.title }}</div>
+  <div>
+    <span class="responsive_header">Author</span>{{ book.author.firstName }}
+    {{ book.author.lastName }}
+  </div>
+  <div>
+    <span class="responsive_header">Publisher</span>{{ book.publisher.name }}
+  </div>
+  <div>
+    <span class="responsive_header">Date</span>{{ book.publishingDate | date }}
+  </div>
+  <div><span class="responsive_header">Genre</span>{{ book.genre }}</div>
+  <div><span class="responsive_header">ISBN</span>{{ book.isbn }}</div>
+  <div>
+    <span class="responsive_header">Status</span>
+    <p-tag
+      severity="{{
+        book.status.id == 1
+          ? 'success'
+          : book.status.id == 2
+          ? 'warning'
+          : 'danger'
+      }}"
+      value="{{ book.status.name }} {{association ? 'by {{association}}': '' }}"
+      [value]="
+        association ? book.status.name + ' by ' + association : book.status.name
+      "
+    ></p-tag>
+  </div>
+  <div *ngIf="accountService.currentUser$ | async">
+    <span class="responsive_header">Action</span>
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-list"
+      class="p-button-rounded p-button-sm p-button-text p-button-secondary"
+      (click)="menu.toggle($event)"
+    ></button>
+  </div>
+</div>

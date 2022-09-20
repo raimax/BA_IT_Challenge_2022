@@ -1,0 +1,37 @@
+.book_card {
+  display: flex;
+  border-bottom: 1px solid #d4d4d8;
+  align-items: center;
+	height: 48px;
+
+  div:not(:last-child) {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+
+	div {
+		padding: 14px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+.responsive_header {
+	display: none;
+}
+
+@media only screen and (max-width: 1024px) {
+  .book_card {
+		display: block;
+		height: fit-content;
+
+		div {
+			border-bottom: 1px solid #d4d4d883;
+		}
+
+		.responsive_header {
+			display: inline-block;
+		}
+	}
+}

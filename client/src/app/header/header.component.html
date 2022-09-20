@@ -1,0 +1,47 @@
+<header>
+  <a routerLink="/">
+    <img class="site_logo" src="assets/images/booksspot_logo.png" alt="" />
+  </a>
+
+  <div class="auth_menu" *ngIf="accountService.currentUser$ | async as user">
+    <button
+      *ngIf="user.roles.includes('Admin')"
+      routerLink="/admin"
+      pButton
+      pRipple
+      type="button"
+      label="Admin Panel"
+      class="p-button-help p-button-text p-button-sm"
+    ></button>
+    <p-avatar icon="pi pi-user" shape="circle"></p-avatar>
+    <span class="username">{{ user.username }}</span>
+    <button
+      pButton
+      pRipple
+      class="p-button-sm p-button-danger"
+      icon="pi pi-sign-out"
+      iconPos="left"
+      label="Logout"
+      (click)="accountService.logout()"
+    ></button>
+  </div>
+
+  <div class="auth_menu" *ngIf="!(accountService.currentUser$ | async)">
+    <button
+      routerLink="/login"
+      pButton
+      pRipple
+      type="button"
+      label="Login"
+      class="p-button-secondary p-button-text p-button-sm"
+    ></button>
+    <button
+      routerLink="/register"
+      pButton
+      pRipple
+      type="button"
+      label="Register"
+      class="p-button-sm"
+    ></button>
+  </div>
+</header>

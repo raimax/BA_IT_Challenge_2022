@@ -1,0 +1,141 @@
+<div class="search_page_title">
+  <i class="pi pi-search" style="font-size: 3rem"></i>
+  <h1>Search Books</h1>
+</div>
+
+<div class="form_container">
+  <form (ngSubmit)="search(true)" [formGroup]="searchForm">
+    <app-text-input
+      [formControl]="searchForm.controls['title']"
+      label="Title"
+      type="text"
+      placeholder="Enter book title"
+    ></app-text-input>
+    <div *ngIf="!advancedSearchActive">
+      <p-divider align="center">
+        <span class="p-tag">Advanced</span>
+      </p-divider>
+      <app-text-input
+        [formControl]="searchForm.controls['author']"
+        label="Author"
+        type="text"
+        placeholder="Enter author's first name, last name or both"
+      ></app-text-input>
+      <app-text-input
+        [formControl]="searchForm.controls['publisher']"
+        label="Publisher"
+        type="text"
+        placeholder="Enter Publisher's name"
+      ></app-text-input>
+      <label for="publishingDate">Publishing Date</label>
+      <p-calendar
+        id="publishingDate"
+        formControlName="publishingDate"
+        placeholder="Click to select date"
+        class="p-inputtext-sm"
+        dateFormat="yy-mm-dd"
+      ></p-calendar>
+      <app-text-input
+        [formControl]="searchForm.controls['genre']"
+        label="Genre"
+        type="text"
+        placeholder="Enter genre"
+      ></app-text-input>
+      <app-text-input
+        [formControl]="searchForm.controls['isbn']"
+        label="ISBN"
+        type="text"
+        placeholder="Enter ISBN"
+      ></app-text-input>
+      <label for="statusDropdown">Status</label>
+      <p-dropdown
+        id="statusDropdown"
+        [options]="status"
+        formControlName="status"
+        optionLabel="name"
+        optionValue="id"
+        class="p-inputtext-sm"
+      ></p-dropdown>
+    </div>
+    <button
+      pButton
+      pRipple
+      type="submit"
+      label="Search"
+      class="p-button-sm"
+      icon="pi pi-search"
+      [disabled]="!searchForm.valid || isLoading"
+      [loading]="isLoading"
+    ></button>
+  </form>
+  <button
+    *ngIf="!advancedSearchActive"
+    pButton
+    pRipple
+    type="button"
+    label="Clear Fields"
+    class="p-button-secondary p-button-text p-button-sm clear_fields_btn"
+		icon="pi pi-times"
+		(click)="clearForm()"
+  ></button>
+  <div class="advanced_search_btn_container">
+    <p-toggleButton
+      [(ngModel)]="advancedSearchActive"
+      offLabel="Close Advanced Search"
+      onLabel="Advanced Search"
+      offIcon="pi pi-times"
+      [style]="{ width: '100%' }"
+      styleClass="p-button-sm"
+      [disabled]="isLoading"
+    ></p-toggleButton>
+  </div>
+</div>
+
+<p-messages
+  *ngIf="!(accountService.currentUser$ | async) && books.length"
+  severity="info"
+>
+  <ng-template pTemplate>
+    <i class="pi pi-info-circle p-message-icon"></i>
+    <span class="p-message-summary">Info</span>
+    <span class="p-message-detail"
+      >To reserve or borrow a book you need to</span
+    >
+    <p-button
+      routerLink="/login"
+      label="login"
+      styleClass="p-button-link"
+    ></p-button>
+  </ng-template>
+</p-messages>
+
+<div *ngIf="pagination" class="book_list">
+  <ul class="book_list_header">
+    <li>Title</li>
+    <li>Author</li>
+    <li>Publisher</li>
+    <li>Date</li>
+    <li>Genre</li>
+    <li>ISBN</li>
+    <li>Status</li>
+    <li *ngIf="accountService.currentUser$ | async">Action</li>
+  </ul>
+  <app-book
+    *ngFor="let book of books"
+    [book]="book"
+    (onReserve)="reserveBook($event)"
+    (onBorrow)="borrowBook($event)"
+    (onDelete)="deleteBook($event)"
+  ></app-book>
+  <p-paginator
+    *ngIf="books.length > 0"
+    [rows]="pagination.itemsPerPage"
+    [totalRecords]="pagination.totalItems"
+    (onPageChange)="paginate($event)"
+    [rowsPerPageOptions]="[10, 20, 30]"
+  ></p-paginator>
+</div>
+
+<div class="no_books" *ngIf="books.length == 0 && pagination">
+  <img src="assets/images/no-results.png" alt="no-results" /> No books found
+</div>

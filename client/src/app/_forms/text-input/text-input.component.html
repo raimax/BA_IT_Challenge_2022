@@ -1,0 +1,58 @@
+<div class="{{ classList }}">
+  <label [hidden]="labelHidden" for="{{ label }}">{{ label }}</label>
+
+  <div class="input_container">
+    <input
+      id="{{ label }}"
+      class="p-inputtext-sm"
+      type="{{ type }}"
+      pInputText
+      [formControl]="$any(ngControl.control)"
+      [autofocus]="autofocus"
+      [placeholder]="placeholder"
+    />
+
+    <div
+      *ngIf="ngControl.control?.errors?.['required'] && ngControl.dirty"
+      class="form_error_text"
+    >
+      <small
+        >Please enter {{ label === "Email" ? "an" : "a" }}
+        {{ label.toLowerCase() }}</small
+      >
+    </div>
+
+    <div
+      *ngIf="ngControl.control?.errors?.['minlength']"
+      class="form_error_text"
+    >
+      <small
+        >{{ label }} must be at least
+        {{ ngControl.control?.errors?.["minlength"]["requiredLength"] }}
+        characters long</small
+      >
+    </div>
+
+    <div
+      *ngIf="ngControl.control?.errors?.['matching']"
+      class="form_error_text"
+    >
+      <small>Passwords do not match</small>
+    </div>
+
+    <div *ngIf="ngControl.control?.errors?.['email']" class="form_error_text">
+      <small>Email is not valid</small>
+    </div>
+
+    <div
+      *ngIf="ngControl.control?.errors?.['maxlength']"
+      class="form_error_text"
+    >
+      <small
+        >{{ label }} must be less than
+        {{ ngControl.control?.errors?.["maxlength"]["requiredLength"] }}
+        characters long</small
+      >
+    </div>
+  </div>
+</div>

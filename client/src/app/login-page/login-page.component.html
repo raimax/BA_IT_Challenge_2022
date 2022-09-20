@@ -1,0 +1,26 @@
+<h1>Login</h1>
+
+<div class="form_container">
+  <form (ngSubmit)="login()" [formGroup]="loginForm">
+    <app-text-input
+      [formControl]="loginForm.controls['username']"
+      label="Username"
+      type="text"
+    ></app-text-input>
+    <app-text-input
+      [formControl]="loginForm.controls['password']"
+      label="Password"
+      type="password"
+    ></app-text-input>
+    <button
+      pButton
+      pRipple
+      type="submit"
+      label="Login"
+      class="p-button-sm"
+      icon="pi pi-key"
+      [disabled]="!loginForm.valid"
+			[loading]="isLoading"
+    ></button>
+  </form>
+</div>

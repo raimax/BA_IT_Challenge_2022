@@ -1,0 +1,133 @@
+<div class="admin_page">
+  <p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
+  <div *ngIf="activeItem.label === 'Reserved Books'" class="admin_page_active">
+    <div *ngIf="pagination" class="book_list">
+      <ul class="book_list_header">
+        <li>Title</li>
+        <li>Author</li>
+        <li>Publisher</li>
+        <li>Date</li>
+        <li>Genre</li>
+        <li>ISBN</li>
+        <li>Status</li>
+        <li>Action</li>
+      </ul>
+      <app-book
+        *ngFor="let reservedBook of reservedBooks"
+        [book]="reservedBook.book"
+        [association]="reservedBook.reservedBy"
+        (onReturn)="returnBook($event)"
+      ></app-book>
+      <p-paginator
+        *ngIf="reservedBooks.length > 0"
+        [rows]="pagination.itemsPerPage"
+        [totalRecords]="pagination.totalItems"
+        (onPageChange)="paginate($event)"
+        [rowsPerPageOptions]="[10, 20, 30]"
+      ></p-paginator>
+    </div>
+    <div
+      class="no_books"
+      *ngIf="reservedBooks.length == 0 && pagination && !isLoading"
+    >
+      There are no reserved books
+    </div>
+  </div>
+  <div *ngIf="activeItem.label === 'Borrowed Books'" class="admin_page_active">
+    <div *ngIf="pagination" class="book_list">
+      <ul class="book_list_header">
+        <li>Title</li>
+        <li>Author</li>
+        <li>Publisher</li>
+        <li>Date</li>
+        <li>Genre</li>
+        <li>ISBN</li>
+        <li>Status</li>
+        <li>Action</li>
+      </ul>
+      <app-book
+        *ngFor="let borrowedBook of borrowedBooks"
+        [book]="borrowedBook.book"
+        [association]="borrowedBook.borrowedBy"
+        (onReturn)="returnBook($event)"
+      ></app-book>
+      <p-paginator
+        *ngIf="borrowedBooks.length > 0"
+        [rows]="pagination.itemsPerPage"
+        [totalRecords]="pagination.totalItems"
+        (onPageChange)="paginate($event)"
+        [rowsPerPageOptions]="[10, 20, 30]"
+      ></p-paginator>
+    </div>
+
+    <div
+      class="no_books"
+      *ngIf="borrowedBooks.length == 0 && pagination && !isLoading"
+    >
+      There are no borrowed books
+    </div>
+  </div>
+
+  <div *ngIf="activeItem.label === 'Add Book'" class="admin_page_active">
+    <div class="form_container">
+      <form (ngSubmit)="addBook()" [formGroup]="addBookForm">
+        <app-text-input
+          [formControl]="addBookForm.controls['title']"
+          label="Title"
+          type="text"
+          placeholder="Enter book title"
+        ></app-text-input>
+        <div class="form_group">
+          <app-text-input
+            [formControl]="addBookForm.controls['authorFirstName']"
+            label="Author's First Name"
+            type="text"
+            placeholder="Enter author's first name"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="addBookForm.controls['authorLastName']"
+            label="Author's Last name"
+            type="text"
+            placeholder="Enter author's last name"
+          ></app-text-input>
+        </div>
+        <app-text-input
+          [formControl]="addBookForm.controls['publisher']"
+          label="Publisher"
+          type="text"
+          placeholder="Enter Publisher's name"
+        ></app-text-input>
+        <label for="publishingDate">Publishing Date</label>
+        <p-calendar
+          id="publishingDate"
+          formControlName="publishingDate"
+          placeholder="Click to select date"
+          class="p-inputtext-sm"
+        ></p-calendar>
+        <app-text-input
+          [formControl]="addBookForm.controls['genre']"
+          label="Genre"
+          type="text"
+          placeholder="Enter genre"
+        ></app-text-input>
+        <app-text-input
+          [formControl]="addBookForm.controls['isbn']"
+          label="ISBN"
+          type="text"
+          placeholder="Enter ISBN"
+        ></app-text-input>
+
+        <button
+          pButton
+          pRipple
+          type="submit"
+          label="Add Book"
+          class="p-button-sm"
+          icon="pi pi-search"
+          [disabled]="!addBookForm.valid || isLoading"
+          [loading]="isLoading"
+        ></button>
+      </form>
+    </div>
+  </div>
+</div>
