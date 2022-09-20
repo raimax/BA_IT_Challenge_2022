@@ -28,7 +28,10 @@ export class BookService {
     params = params.append('title', bookParams.title || '');
     params = params.append('author', bookParams.author || '');
     params = params.append('publisher', bookParams.publisher || '');
-    params = params.append('publishingDate', bookParams.publishingDate || '');
+    params = params.append(
+      'publishingDate',
+      bookParams.publishingDate!.toLocaleDateString() || ''
+    );
     params = params.append('genre', bookParams.genre || '');
     params = params.append('isbn', bookParams.isbn || '');
     params = params.append('status', bookParams.status || 0);
