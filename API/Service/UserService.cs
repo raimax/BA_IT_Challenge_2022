@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace API.Service
 {
+    /// <summary>
+    /// Handles business logic related to users
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly UserManager<AppUser> _userManager;
@@ -19,6 +22,12 @@ namespace API.Service
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Creates a new user
+        /// </summary>
+        /// <param name="authDto"></param>
+        /// <returns>AppUser entity</returns>
+        /// <exception cref="BadRequestException"></exception>
         public async Task<AppUser> CreateAsync(AuthRequestDto authDto)
         {
             AppUser? existingUser = await _userManager.FindByNameAsync(authDto.Username);
@@ -47,6 +56,11 @@ namespace API.Service
             return user;
         }
 
+        /// <summary>
+        /// Finds user by username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>AppUser entity or null if not found</returns>
         public async Task<AppUser?> FindByUsernameAsync(string username)
         {
             return await _userManager.FindByNameAsync(username);

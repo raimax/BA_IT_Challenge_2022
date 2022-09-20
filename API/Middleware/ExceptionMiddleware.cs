@@ -4,6 +4,9 @@ using System.Text.Json;
 
 namespace API.Middleware
 {
+    /// <summary>
+    /// This class handles exceptions globally
+    /// </summary>
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;

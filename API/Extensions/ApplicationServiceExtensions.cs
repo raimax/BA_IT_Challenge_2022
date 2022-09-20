@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions
 {
+    /// <summary>
+    /// Extends services
+    /// </summary>
     public static class ApplicationServiceExtensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)

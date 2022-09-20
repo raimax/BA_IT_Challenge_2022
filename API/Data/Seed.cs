@@ -5,6 +5,9 @@ using System.Text.Json;
 
 namespace API.Data
 {
+    /// <summary>
+    /// This class is used for seeding data into the database on first launch
+    /// </summary>
     public class Seed
     {
         private readonly DatabaseContext _dbContext;
@@ -14,6 +17,12 @@ namespace API.Data
             _dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Seeds users into databse
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="roleManager"></param>
+        /// <returns></returns>
         public async Task SeedUsers(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             if (await userManager.Users.AnyAsync()) return;
@@ -57,6 +66,10 @@ namespace API.Data
             await userManager.AddToRolesAsync(user, roles);
         }
 
+        /// <summary>
+        /// Seeds book status into databse
+        /// </summary>
+        /// <returns></returns>
         public async Task SeedBookStatus()
         {
             if (await _dbContext.Status.AnyAsync()) return;
@@ -85,6 +98,10 @@ namespace API.Data
             await _dbContext.Status.AddAsync(status);
         }
 
+        /// <summary>
+        /// Seeds books into database
+        /// </summary>
+        /// <returns></returns>
         public async Task SeedBooks()
         {
             if (await _dbContext.Books.AnyAsync()) return;

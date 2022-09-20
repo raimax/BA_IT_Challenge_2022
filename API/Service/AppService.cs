@@ -3,6 +3,9 @@ using API.Extensions;
 
 namespace API.Service
 {
+    /// <summary>
+    /// This class lets services access authenticated user's information
+    /// </summary>
     public abstract class AppService
     {
         private readonly IHttpContextAccessor _context;

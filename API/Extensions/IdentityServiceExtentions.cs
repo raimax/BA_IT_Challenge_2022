@@ -7,8 +7,17 @@ using System.Text;
 
 namespace API.Extensions
 {
+    /// <summary>
+    /// This class is used to configure authentication
+    /// </summary>
     public static class IdentityServiceExtentions
     {
+        /// <summary>
+        /// Configures services related to authentication/authorization
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentityCore<AppUser>(opt =>

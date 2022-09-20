@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Service
 {
+    /// <summary>
+    /// Handles business logic related to books
+    /// </summary>
     public class BookService : AppService, IBookService
     {
         private readonly DatabaseContext _context;
@@ -21,6 +24,14 @@ namespace API.Service
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Borrows a book
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
+        /// <exception cref="UnauthorizedException"></exception>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="BadRequestException"></exception>
         public async Task BorrowAsync(int bookId)
         {
             AppUser? user = await _context.Users
@@ -61,6 +72,12 @@ namespace API.Service
                 throw new BadRequestException("Failed to borrow a book");
         }
 
+        /// <summary>
+        /// Creates a new book
+        /// </summary>
+        /// <param name="bookRequestDto"></param>
+        /// <returns>book response entity</returns>
+        /// <exception cref="BadRequestException"></exception>
         public async Task<BookResponseDto> CreateAsync(BookRequestDto bookRequestDto)
         {
             Book? bookWithSameIsbn = await _context.Books.SingleOrDefaultAsync(x => x.Isbn == bookRequestDto.Isbn);
@@ -86,6 +103,12 @@ namespace API.Service
             return _mapper.Map<BookResponseDto>(book);
         }
 
+        /// <summary>
+        /// Finds a book by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>book response entity</returns>
+        /// <exception cref="NotFoundException"></exception>
         public async Task<BookResponseDto> FindByIdAsync(int id)
         {
             Book? book = await _context.Books
@@ -99,6 +122,12 @@ namespace API.Service
             return _mapper.Map<BookResponseDto>(book);
         }
 
+        /// <summary>
+        /// Gets all books
+        /// </summary>
+        /// <param name="bookParams"></param>
+        /// <returns>Paged list of books</returns>
+        /// <exception cref="BadRequestException"></exception>
         public async Task<PagedList<BookResponseDto>> GetPagedListAsync(BookParams bookParams)
         {
             IQueryable<BookResponseDto> books = _context.Books
@@ -156,6 +185,14 @@ namespace API.Service
             return await PagedList<BookResponseDto>.CreateAsync(books, bookParams.PageNumber, bookParams.PageSize);
         }
 
+        /// <summary>
+        /// Reserves a book
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
+        /// <exception cref="UnauthorizedException"></exception>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="BadRequestException"></exception>
         public async Task ReserveAsync(int bookId)
         {
             AppUser? user = await _context.Users
@@ -187,6 +224,13 @@ namespace API.Service
                 throw new BadRequestException("Failed to reserve a book");
         }
 
+        /// <summary>
+        /// Returns or un-reserves a book
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="BadRequestException"></exception>
         public async Task ReturnAsync(int bookId)
         {
             Book? book = await _context.Books
@@ -224,6 +268,11 @@ namespace API.Service
                 throw new BadRequestException("Failed to return a book");
         }
 
+        /// <summary>
+        /// Gets all reserved books
+        /// </summary>
+        /// <param name="paginationParams"></param>
+        /// <returns>Paged list of reserved books</returns>
         public async Task<PagedList<ReservedBookResponseDto>> GetReservedPagedListAsync(PaginationParams paginationParams)
         {
             IQueryable<ReservedBookResponseDto> reservedBooks = _context.ReservedBooks
@@ -233,6 +282,11 @@ namespace API.Service
             return await PagedList<ReservedBookResponseDto>.CreateAsync(reservedBooks, paginationParams.PageNumber, paginationParams.PageSize);
         }
 
+        /// <summary>
+        /// Gets all borrowed books
+        /// </summary>
+        /// <param name="paginationParams"></param>
+        /// <returns>Paged list of borrowed books</returns>
         public async Task<PagedList<BorrowedBookResponseDto>> GetBorrowedPagedListAsync(PaginationParams paginationParams)
         {
             IQueryable<BorrowedBookResponseDto> borrowedBooks = _context.BorrowedBooks
@@ -242,6 +296,13 @@ namespace API.Service
             return await PagedList<BorrowedBookResponseDto>.CreateAsync(borrowedBooks, paginationParams.PageNumber, paginationParams.PageSize);
         }
 
+        /// <summary>
+        /// Deletes a book
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="BadRequestException"></exception>
         public async Task DeleteAsync(int bookId)
         {
             Book? book = await _context.Books.SingleOrDefaultAsync(x => x.Id == bookId);
