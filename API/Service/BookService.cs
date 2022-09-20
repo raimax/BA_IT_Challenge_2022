@@ -134,7 +134,7 @@ namespace API.Service
                 }
                 catch (Exception)
                 {
-
+                    throw new BadRequestException("Can't get books: date format is invalid");
                 }
             }
             if (!string.IsNullOrWhiteSpace(bookParams.Genre))
