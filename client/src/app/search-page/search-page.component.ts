@@ -139,4 +139,8 @@ export class SearchPageComponent implements OnInit {
       },
     });
   }
+
+  clearForm() {
+    this.searchForm.reset();
+  }
 }

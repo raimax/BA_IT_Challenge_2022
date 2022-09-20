@@ -33,7 +33,7 @@
         formControlName="publishingDate"
         placeholder="Click to select date"
         class="p-inputtext-sm"
-				dateFormat="yy-mm-dd"
+        dateFormat="yy-mm-dd"
       ></p-calendar>
       <app-text-input
         [formControl]="searchForm.controls['genre']"
@@ -68,6 +68,16 @@
       [loading]="isLoading"
     ></button>
   </form>
+  <button
+    *ngIf="!advancedSearchActive"
+    pButton
+    pRipple
+    type="button"
+    label="Clear Fields"
+    class="p-button-secondary p-button-text p-button-sm clear_fields_btn"
+		icon="pi pi-times"
+		(click)="clearForm()"
+  ></button>
   <div class="advanced_search_btn_container">
     <p-toggleButton
       [(ngModel)]="advancedSearchActive"
