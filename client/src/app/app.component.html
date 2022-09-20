@@ -1,9 +1,13 @@
 <p-toast></p-toast>
 
+<ngx-spinner>
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+
 <div class="main_container">
   <app-header></app-header>
   <div class="page_container">
     <router-outlet [hidden]="true"></router-outlet>
   </div>
-	<app-footer></app-footer>
+  <app-footer></app-footer>
 </div>

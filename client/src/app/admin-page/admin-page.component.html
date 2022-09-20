@@ -26,7 +26,10 @@
         [rowsPerPageOptions]="[10, 20, 30]"
       ></p-paginator>
     </div>
-    <div class="no_books" *ngIf="reservedBooks.length == 0 && pagination">
+    <div
+      class="no_books"
+      *ngIf="reservedBooks.length == 0 && pagination && !isLoading"
+    >
       There are no reserved books
     </div>
   </div>
@@ -57,7 +60,10 @@
       ></p-paginator>
     </div>
 
-    <div class="no_books" *ngIf="borrowedBooks.length == 0 && pagination">
+    <div
+      class="no_books"
+      *ngIf="borrowedBooks.length == 0 && pagination && !isLoading"
+    >
       There are no borrowed books
     </div>
   </div>
@@ -71,20 +77,20 @@
           type="text"
           placeholder="Enter book title"
         ></app-text-input>
-				<div class="form_group">
-					<app-text-input
-          [formControl]="addBookForm.controls['authorFirstName']"
-          label="Author's First Name"
-          type="text"
-          placeholder="Enter author's first name"
-        ></app-text-input>
-				<app-text-input
-          [formControl]="addBookForm.controls['authorLastName']"
-          label="Author's Last name"
-          type="text"
-          placeholder="Enter author's last name"
-        ></app-text-input>
-				</div>
+        <div class="form_group">
+          <app-text-input
+            [formControl]="addBookForm.controls['authorFirstName']"
+            label="Author's First Name"
+            type="text"
+            placeholder="Enter author's first name"
+          ></app-text-input>
+          <app-text-input
+            [formControl]="addBookForm.controls['authorLastName']"
+            label="Author's Last name"
+            type="text"
+            placeholder="Enter author's last name"
+          ></app-text-input>
+        </div>
         <app-text-input
           [formControl]="addBookForm.controls['publisher']"
           label="Publisher"

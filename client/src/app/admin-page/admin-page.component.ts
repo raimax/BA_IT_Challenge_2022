@@ -163,7 +163,7 @@ export class AdminPageComponent implements OnInit {
     this.bookService.addBook(book).subscribe({
       next: () => {
         this.isLoading = false;
-        this.addBookForm.reset();
+				this.addBookForm.reset();
         this.messageService.add({
           severity: 'success',
           summary: 'Success',

@@ -34,6 +34,8 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { FooterComponent } from './footer/footer.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -71,10 +73,12 @@ import { TabMenuModule } from 'primeng/tabmenu';
     TagModule,
     ToastModule,
     TabMenuModule,
+    NgxSpinnerModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     MessageService,
   ],
   bootstrap: [AppComponent],
