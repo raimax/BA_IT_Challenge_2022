@@ -29,6 +29,7 @@ using (var scope = app.Services.CreateScope())
     Seed seed = new(context);
     await seed.SeedUsers(userManager, roleManager);
     await seed.SeedBookStatus();
+    await seed.SeedBooks();
 }
 
 // Configure the HTTP request pipeline.

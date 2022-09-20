@@ -1,6 +1,7 @@
 ﻿using API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace API.Data
 {
@@ -82,6 +83,40 @@ namespace API.Data
             };
 
             await _dbContext.Status.AddAsync(status);
+        }
+
+        public async Task SeedBooks()
+        {
+            if (await _dbContext.Books.AnyAsync()) return;
+
+            var bookData = await File.ReadAllTextAsync("Data/books.json");
+            var books = JsonSerializer.Deserialize<List<Book>>(bookData);
+
+            if (books is null) return;
+
+            Status? status = await _dbContext.Status.FindAsync(1);
+            if (status is not null)
+            {
+                foreach (var book in books)
+                {
+                    Author? author = await _dbContext.Authors
+                        .SingleOrDefaultAsync(x =>
+                            x.FirstName.ToLower() == book.Author.FirstName.ToLower() &&
+                            x.LastName.ToLower() == book.Author.LastName.ToLower());
+
+                    Publisher? publisher = await _dbContext.Publishers
+                        .SingleOrDefaultAsync(x => x.Name.ToLower() == book.Publisher.Name.ToLower());
+
+                    if (author is not null) book.Author = author;
+                    if (publisher is not null) book.Publisher = publisher;
+
+                    book.Status = status;
+                }
+            }
+
+            await _dbContext.Books.AddRangeAsync(books);
+            await _dbContext.SaveChangesAsync();
+
         }
     }
 }

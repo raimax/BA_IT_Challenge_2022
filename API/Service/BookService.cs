@@ -63,6 +63,9 @@ namespace API.Service
 
         public async Task<BookResponseDto> CreateAsync(BookRequestDto bookRequestDto)
         {
+            Book? bookWithSameIsbn = await _context.Books.SingleOrDefaultAsync(x => x.Isbn == bookRequestDto.Isbn);
+            if (bookWithSameIsbn is not null) throw new BadRequestException("Isbn is already used");
+
             Author? author = await _context.Authors
                 .SingleOrDefaultAsync(x =>
                     x.FirstName.ToLower() == bookRequestDto.Author.FirstName.ToLower() &&

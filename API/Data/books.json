@@ -1,0 +1,67 @@
+[
+  {
+    "Title": "Things Fall Apart",
+    "Author": {
+      "FirstName": "Chinua",
+      "LastName": "Achebe"
+    },
+    "Publisher": {
+      "Name": "Knopf Doubleday"
+    },
+    "PublishingDate": "1958-03-12",
+    "Genre": "Fantasy",
+    "Isbn": "9485736295746"
+  },
+  {
+    "Title": "Fairy tales",
+    "Author": {
+      "FirstName": "Hans",
+      "LastName": "Andersen"
+    },
+    "Publisher": {
+      "Name": "MIT Press"
+    },
+    "PublishingDate": "1836-11-22",
+    "Genre": "Fantasy",
+    "Isbn": "5425736275446"
+  },
+  {
+    "Title": "Pride and Prejudice",
+    "Author": {
+      "FirstName": "Jane",
+      "LastName": "Austen"
+    },
+    "Publisher": {
+      "Name": "Grove Atlantic"
+    },
+    "PublishingDate": "1813-05-17",
+    "Genre": "Historical",
+    "Isbn": "8425736272416"
+  },
+  {
+    "Title": "Molloy, Malone Dies",
+    "Author": {
+      "FirstName": "Samuel",
+      "LastName": "Beckett"
+    },
+    "Publisher": {
+      "Name": "McSweeney's Books"
+    },
+    "PublishingDate": "1952-01-03",
+    "Genre": "Thriller",
+    "Isbn": "6425746472496"
+  },
+  {
+    "Title": "The Decameron",
+    "Author": {
+      "FirstName": "Giovanni",
+      "LastName": "Boccaccio"
+    },
+    "Publisher": {
+      "Name": "Grove Atlantic"
+    },
+    "PublishingDate": "1351-08-19",
+    "Genre": "Romance",
+    "Isbn": "2425766473410"
+  }
+]
