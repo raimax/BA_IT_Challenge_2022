@@ -13,6 +13,6 @@ namespace API.IService
         Task ReserveAsync(int bookId);
         Task BorrowAsync(int bookId);
         Task ReturnAsync(int bookId);
-        Task AddAsync();
+        Task DeleteAsync(int bookId);
     }
 }

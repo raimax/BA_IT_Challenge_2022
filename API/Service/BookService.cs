@@ -239,9 +239,16 @@ namespace API.Service
             return await PagedList<BorrowedBookResponseDto>.CreateAsync(borrowedBooks, paginationParams.PageNumber, paginationParams.PageSize);
         }
 
-        public Task AddAsync()
+        public async Task DeleteAsync(int bookId)
         {
-            throw new NotImplementedException();
+            Book? book = await _context.Books.SingleOrDefaultAsync(x => x.Id == bookId);
+
+            if (book is null) throw new NotFoundException("Book not found");
+
+            _context.Books.Remove(book);
+
+            if (await _context.SaveChangesAsync() < 1)
+                throw new BadRequestException("Failed to delete a book");
         }
     }
 }

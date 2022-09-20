@@ -91,5 +91,14 @@ namespace API.Controllers
 
             return Ok(borrowedBooks);
         }
+
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpDelete("{bookId}")]
+        public async Task<ActionResult> Delete(int bookId)
+        {
+            await _bookService.DeleteAsync(bookId);
+
+            return NoContent();
+        }
     }
 }

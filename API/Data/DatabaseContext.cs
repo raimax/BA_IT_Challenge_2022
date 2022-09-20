@@ -20,7 +20,7 @@ namespace API.Data
         public DbSet<Status> Status { get; set; }
 
 
-        protected override async void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
@@ -41,12 +41,6 @@ namespace API.Data
 
             builder.Entity<ReservedBook>()
                 .HasKey(b => new { b.UserId, b.BookId });
-
-            //builder.Entity<BorrowedBook>()
-            //    .HasOne(source => source.User)
-            //    .WithMany(user => user.BorrowedBooks)
-            //    .HasForeignKey(s => s.UserId)
-            //    .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
