@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { map } from 'rxjs';
+import { map, take } from 'rxjs';
 import { Book } from '../_models/book';
 import { BookStatus } from '../_models/status';
 import { User } from '../_models/user';
@@ -21,14 +21,13 @@ export class BookComponent implements OnInit {
   bookActions: MenuItem[] = [];
   currentuser: User | null = null;
 
-  constructor(public accountService: AccountService) {}
+  constructor(public accountService: AccountService) {
+    this.accountService.currentUser$
+      .pipe(take(1))
+      .subscribe({ next: (user) => (this.currentuser = user) });
+  }
 
   ngOnInit(): void {
-    this.accountService.currentUser$.pipe(
-      map((response) => {
-        this.currentuser = response;
-      })
-    );
     if (!this.association) {
       this.bookActions = [
         {
